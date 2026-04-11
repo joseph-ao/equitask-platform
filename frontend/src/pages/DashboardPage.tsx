@@ -1,9 +1,9 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { getUsers, type UserOption } from '../api/users';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getTasks, createTask, deleteTask, acknowledgeTask } from '../api/tasks';
 import type { Task } from '../types';
 import Navbar from '../components/Navbar';
-
 export default function DashboardPage() {
     const { isTeamLeader, user } = useAuth();
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -19,10 +19,14 @@ export default function DashboardPage() {
     const [dueDate, setDueDate] = useState('');
     const [assignedUserId, setAssignedUserId] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [users, setUsers] = useState<UserOption[]>([]);
 
     useEffect(() => {
-        getTasks()
-            .then(setTasks)
+        Promise.all([getTasks(), getUsers()])
+            .then(([fetchedTasks, fetchedUsers]) => {
+                setTasks(fetchedTasks);
+                setUsers(fetchedUsers);
+            })
             .finally(() => setLoading(false));
     }, []);
 
@@ -145,14 +149,17 @@ export default function DashboardPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Assigned To (User ID)</label>
-                                <input
-                                    type="text"
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                                <select
                                     value={assignedUserId}
                                     onChange={e => setAssignedUserId(e.target.value)}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                                    placeholder="User ID"
-                                />
+                                >
+                                    <option value="">Select a team member...</option>
+                                    {users.map(u => (
+                                        <option key={u.id} value={u.id}>{u.fullName} ({u.role})</option>
+                                    ))}
+                                </select>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
