@@ -1,4 +1,4 @@
-﻿# EquiTask — Workload Tracker Platform
+﻿# EquiTask Platform
 
 A full-stack team workload management application built with **ASP.NET Core 10 (.NET 10)** for the backend and **React + TypeScript (Vite)** for the frontend. It supports task assignment, change requests, workload visualization, and JWT-based authentication with role-based access.
 
