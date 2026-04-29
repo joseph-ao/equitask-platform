@@ -54,8 +54,6 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
 builder.Services.AddScoped<IWorkloadService, WorkloadService>();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     // Tell Swagger that this API uses JWT Bearer tokens

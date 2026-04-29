@@ -52,7 +52,7 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> CreateTask([FromBody] TaskCreateDto dto)
     {
         var role = GetUserRole();
-        if (role != "TeamLeader")
+        if (role != "TeamLeader" && role !="Admin")
             return Forbid(); 
 
         var task = await _taskService.CreateTaskAsync(dto);
@@ -71,7 +71,7 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> DeleteTask(int id)
     {
         var role = GetUserRole();
-        if (role != "TeamLeader")
+        if (role != "TeamLeader" && role !="Admin")
             return Forbid();
 
         var success = await _taskService.DeleteTaskAsync(id);

@@ -46,7 +46,7 @@ public class ChangeRequestsController : ControllerBase
     [HttpPut("{id}/approve")]
     public async Task<IActionResult> Approve(int id)
     {
-        if (GetUserRole() != "TeamLeader") return Forbid();
+        if (GetUserRole() != "TeamLeader" && GetUserRole() !="Admin") return Forbid();
         var success = await _service.ApproveAsync(id);
         if (!success) return NotFound();
         return Ok("Change request approved.");
