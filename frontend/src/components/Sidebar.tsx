@@ -16,8 +16,9 @@ export default function Sidebar() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const isAdmin = user?.role === 'Admin';
     const initials = user?.fullName.split(' ').map(n => n[0]).join('').toUpperCase() ?? '?';
-    const nav = isTeamLeader() ? LEADER_NAV : MEMBER_NAV;
+    const nav = isAdmin || isTeamLeader() ? LEADER_NAV : MEMBER_NAV;
 
     return (
         <aside className="w-[232px] bg-white border-r border-zinc-200 flex flex-col p-[18px_14px] sticky top-0 h-screen gap-1">
@@ -50,7 +51,14 @@ export default function Sidebar() {
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="text-[12.5px] font-medium truncate">{user?.fullName}</div>
-                    <div className="text-[11px] text-zinc-400">{user?.role}</div>
+                    <div className="text-[11px] text-zinc-400 flex items-center gap-1">
+                        {user?.role === 'TeamLeader' ? 'Team Leader' : user?.role}
+                        {isAdmin && (
+                            <span className="text-[10px] font-medium px-1 py-0.5 rounded bg-violet-100 text-violet-600">
+                Admin
+              </span>
+                        )}
+                    </div>
                 </div>
                 <button onClick={() => { logout(); navigate('/login'); }}
                         className="text-[12px] text-zinc-400 hover:text-red-500 transition-colors">
